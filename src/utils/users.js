@@ -61,10 +61,6 @@ const getUsersInRoom = (room) => {
     const roomUserList = users.filter((user) => user.room === room)
     return roomUserList;
 
-    // NOT REQUIRED
-    // const userList = []
-    // roomUserList.forEach((user)=>userList.push(user.username))
-    // return userList;
 }
 
 

@@ -38,78 +38,8 @@ app.get("/", (req, res)=>{
 })
 
 
-
-
-
-// app.listen(port, () => {
-//     console.log(`Server is running on ${port}.`)
-// })
-
-
-
-/*
-server(emit) -> client(receive) -> countUpdated Evenet
-client(emit) -> server(receive) -> incremented Event
-*/
-
-
-
-let count = 0;
-
-
 //io.on(<eventname>, <call back func runs on event>)
 io.on("connection", (socket)=>{
-    console.log("New socket.io connection.")
-
-
-
-
-
-    // Playground for socket.io emit and listen
-    // //sendig an event from server(index.js) to client(chat.js)
-    // //This event could be anything x,y,z
-    // socket.emit("countUpdated", count) // Here we r not using io.emit() bcz we dont want to send the count to all conenctions
-
-    // //Listen the event sent by client chat.js
-    // socket.on('incremented', ()=>{
-    //     count++ ;
-    //     //socket.emit("countUpdated", count) 
-    //     //socket.emit emits only to one conenction at a time hence if 3 connctons ar there other two will not get same response from erver
-
-    //     io.emit('countUpdated', count)
-    //})
-
-
-
-
-
-    // CODE CHALLENEG // 
-    // Commenting this as we are gonne use it inside room
-    // Server will send welcome message to new user
-    //socket.emit("message", generateMessage("Server: Welcome to you user!"));
-
-
-
-    //Broad case message to all user except the user who just joined.
-    //MOving this to join room
-    //socket.broadcast.emit("message", generateMessage("A new user has joined."));
-
-
-
-
-
-
-    // Server lisening the client data  CODE-x123
-    // socket.on("sendMessage", (inputTextReceived)=>{
-    //     //console.log(`Serverside: Client send data: ${inputTextReceived}`);
-    //     //Server will relying the message to all connected users
-    //     io.emit("message", inputTextReceived)
-    // })
-
-
-
-
-
 
     //Receiving the username and room name of join page from client
     socket.on('join', ({username, room}, callback) => {
@@ -122,18 +52,6 @@ io.on("connection", (socket)=>{
 
         //socket.join onl be used at server side
         socket.join(user.room)
-
-
-
-        /*
-        socket.emit(specfic client)
-        io.emit(To all connected client)
-        socket.broadcast.emit(To all connected clients except the current one)
-        io.to.emit (Emit an event to everybody inside a room)
-        socket.broadcast.to().emit (Emit an event to all connected user except current one inside a room)
-        */
-
-
 
 
         // Server will send welcome message to new user
@@ -180,8 +98,6 @@ io.on("connection", (socket)=>{
             return callback("No location data received from user.")
         }
 
-        // io.emit("message", `https://google.com/maps?q=${locationData.latitude},${locationData.longitude}`)
-        // callback();
 
         //Server emits the locations url
         io.to(user.room).emit("locationMessage", generateLocationMessage(user.username, `https://google.com/maps?q=${locationData.latitude},${locationData.longitude}`, locationData.timeStamp));
